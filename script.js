@@ -12,10 +12,13 @@ input.addEventListener("input", e => {
     updateDebounceText(e.target.value)
 })
 
-function debounce (cb, delay=1000) {
+function debounce (cb, delay = 1000) {
+    let timeout
+    clearTimeout(timeout)
+   
     return (...args) => {
-        setTimeout(() => {
+        timeout = setTimeout(() => {
             cb(...args)
-        }, timeout);
+        }, delay);
     }
 }
