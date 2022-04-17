@@ -3,19 +3,21 @@ const defaultText = document.getElementById("default")
 const debounceText = document.getElementById("debounce")
 const throttleText = document.getElementById("throttle")
 
-const updateDebounceText = debounce((text) => {
-    debounceText.textContent = text
+const updateDebounceText = debounce(() => {
+    //debounceText.textContent = text
+    incrementCount(debounceText)
 })
 
-const updateThrottleText = throttle((text) => {
-    throttleText.textContent = text
+const updateThrottleText = throttle(() => {
+    //throttleText.textContent = text
+    incrementCount(throttleText)
 })
 
-input.addEventListener("input", e => {
-    defaultText.textContent = e.target.value
-    updateDebounceText(e.target.value)
-    updateThrottleText(e.target.value)
-})
+// input.addEventListener("input", e => {
+//     defaultText.textContent = e.target.value
+//     updateDebounceText(e.target.value)
+//     updateThrottleText(e.target.value)
+// })
 
 function debounce (cb, delay = 1000) {
     let timeout
@@ -31,6 +33,17 @@ function debounce (cb, delay = 1000) {
 function throttle (cb, delay = 1000) {
     let shouldWait = false
     let waitingArgs 
+    
+    const timeoutFunc = () => {
+        if(waitingArgs == null) {
+            shouldWait = false
+        } else {
+            cb(...waitingArgs)
+            waitingArgs = null
+            setTimeout(timeoutFunc, delay)
+        }
+   
+    }
     return (...args) => {
         if(shouldWait) {
             waitingArgs = args
@@ -39,8 +52,16 @@ function throttle (cb, delay = 1000) {
         cb(...args)
         shouldWait = true
 
-        setTimeout(() => {
-        shouldWait = false
-        }, delay)
-    }
+        setTimeout(timeoutFunc, delay)  
+            
+     }
+    
+}
+
+document.addEventListener("mousemove", e => {
+incrementCount(defaultText)
+})
+
+function incrementCount(element) {
+    element.textContent = (parseInt(element.innerText) || 0 ) + 1
 }
