@@ -3,6 +3,7 @@ const defaultText = document.getElementById("default")
 const debounceText = document.getElementById("debounce")
 const throttleText = document.getElementById("throttle")
 
+//update the text in debounce or mouse move
 const updateDebounceText = debounce(() => {
     //debounceText.textContent = text
     incrementCount(debounceText)
@@ -11,7 +12,9 @@ const updateDebounceText = debounce(() => {
 const updateThrottleText = throttle(() => {
     //throttleText.textContent = text
     incrementCount(throttleText)
-})
+}, 100)
+
+//unneeded inputs when not testing text - removed
 
 // input.addEventListener("input", e => {
 //     defaultText.textContent = e.target.value
@@ -19,7 +22,7 @@ const updateThrottleText = throttle(() => {
 //     updateThrottleText(e.target.value)
 // })
 
-function debounce (cb, delay = 1000) {
+function debounce (cb, delay = 1500) {
     let timeout
     clearTimeout(timeout)
    
@@ -58,10 +61,14 @@ function throttle (cb, delay = 1000) {
     
 }
 
+//add event listeners for mousemoves to test throttle/debounce on mousemove rather than just text
 document.addEventListener("mousemove", e => {
 incrementCount(defaultText)
+updateDebounceText()
+updateThrottleText()
 })
 
+//function to increment the count in text content when the mouse moves
 function incrementCount(element) {
     element.textContent = (parseInt(element.innerText) || 0 ) + 1
 }
